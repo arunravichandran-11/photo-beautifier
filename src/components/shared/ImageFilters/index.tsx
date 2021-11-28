@@ -2,10 +2,16 @@ import React from "react";
 import "./ImageFilters.scss";
 import Slider from "../../core/Slider";
 import { defaultImageFilters } from "../../../config/image-config";
-const ImageFilters = ({ onFilterChange }) => {
+import { PHOTO_FILTERS } from "../../../constants/types";
+
+interface ImageFiltersProps {
+  onFilterChange: (e: PHOTO_FILTERS) => void;
+}
+
+const ImageFilters = ({ onFilterChange }: ImageFiltersProps) => {
   const [filters, setFilters] = React.useState(defaultImageFilters);
 
-  const handleFilterChange = (e) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setFilters({
       ...filters,

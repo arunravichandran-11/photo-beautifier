@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./ImageUploader.scss";
-import Button from "../../core/Button/index";
+import { RaisedButton } from "../../core/Button";
 
 import { validateFileUploaded } from "../../../utils/fileValidator";
 
-const ImageUploader = ({ getUploadedFile }) => {
+interface ImageUploaderProps {
+  getUploadedFile: (e: File) => void;
+}
+
+const ImageUploader = ({ getUploadedFile }: ImageUploaderProps) => {
+  const previewRef = useRef<HTMLImageElement | null>(null);
   const acceptedImageTypes = [
     "image/gif",
     "image/jpeg",
@@ -15,15 +20,18 @@ const ImageUploader = ({ getUploadedFile }) => {
   const fileExtensions = ".png,.jpg,.jpeg,.webp";
 
   const [isLoading, setLoading] = React.useState(false);
-  const [uploadedFile, setUploadedFile] = React.useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>();
 
-  const processFile = (file) => {
+  const processFile = (file: File) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
     reader.onload = function () {
-      const preview = document.getElementById("previewImage");
-      preview.setAttribute("src", reader.result);
+      const preview = previewRef.current;
+      const dataUrl: string | ArrayBuffer | null = reader.result;
+      if (preview && dataUrl) {
+        preview.setAttribute("src", dataUrl.toString());
+      }
       setTimeout(() => {
         setUploadedFile(file);
         setLoading(false);
@@ -31,18 +39,20 @@ const ImageUploader = ({ getUploadedFile }) => {
     };
   };
 
-  const handleChange = (e) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement> | null) => {
     setLoading(true);
-    const file = e.target.files[0];
+    if (event && event.target && event.target.files) {
+      const file: File = event.target.files[0];
 
-    const fileError = validateFileUploaded(file, acceptedImageTypes);
+      const fileError = validateFileUploaded(file, acceptedImageTypes);
 
-    if (!fileError) {
-      processFile(file);
+      if (!fileError) {
+        processFile(file);
+      }
     }
   };
 
-  const dropHandler = (e) => {
+  const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const dt = e.dataTransfer;
     const { files } = dt;
@@ -56,13 +66,17 @@ const ImageUploader = ({ getUploadedFile }) => {
 
   useEffect(() => {
     if (uploadedFile) {
-      const preview = document.getElementById("previewImage");
-      preview.style.display = "block";
+      const preview = previewRef.current;
+      if (preview) {
+        preview.style.display = "block";
+      }
     }
   }, [uploadedFile]);
 
   const handleProcess = () => {
-    getUploadedFile(uploadedFile);
+    if (uploadedFile) {
+      getUploadedFile(uploadedFile);
+    }
   };
 
   return (
@@ -101,12 +115,11 @@ const ImageUploader = ({ getUploadedFile }) => {
           <img
             src=""
             alt="previewUpload"
-            id="previewImage"
+            ref={previewRef}
             className="preview-image"
             draggable="false"
             style={{ display: "none" }}
           />
-
           <input
             type="file"
             id="fileInput"
@@ -117,9 +130,9 @@ const ImageUploader = ({ getUploadedFile }) => {
         </label>
       </div>
       <div className="action-panel">
-        <Button type="raised" onClick={handleProcess} disabled={!uploadedFile}>
+        <RaisedButton onClick={handleProcess} disabled={!uploadedFile}>
           Process
-        </Button>
+        </RaisedButton>
       </div>
     </div>
   );

@@ -1,4 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useRef, useEffect } from "react";
+import {
+  PHOTO_FILTERS,
+  ALIGNMENT,
+  ALBUM_DESCRIPTION,
+} from "../../../constants/types";
+
 import {
   drawImageFileIntoCanvas,
   drawImageIntoCanvas,
@@ -8,7 +14,16 @@ import {
 const BOARD_WIDTH = 960;
 const BOARD_HEIGHT = 480;
 
-const DrawBoard = (props) => {
+interface DrawBoardProps {
+  file?: File | null;
+  photoDescription?: ALBUM_DESCRIPTION | null;
+  filters: PHOTO_FILTERS;
+  alignment: ALIGNMENT;
+  getCanvasImageUrl: (e: string) => void;
+  getCanvasProperties: (e: ALBUM_DESCRIPTION) => void;
+}
+
+const DrawBoard = (props: DrawBoardProps) => {
   const {
     file,
     photoDescription,
@@ -16,8 +31,8 @@ const DrawBoard = (props) => {
     alignment,
     getCanvasImageUrl,
     getCanvasProperties,
-  } = props;
-  const drawingBoardRef = React.useRef();
+  }: DrawBoardProps = props;
+  const drawingBoardRef = useRef<HTMLCanvasElement | null>(null);
 
   const printSurfaceProperties = {
     id: "draw-board",
@@ -43,11 +58,10 @@ const DrawBoard = (props) => {
           filter: filters,
           size: alignment,
         },
-        (data) => {
-          console.log("data - upload", data);
+        (data: ALBUM_DESCRIPTION) => {
           if (drawingBoardRef && drawingBoardRef.current) {
             const photoUrl = convertCanvasToDataUrl(drawingBoardRef.current);
-            if (data && getCanvasProperties) {
+            if (data) {
               data.photo.src = photoUrl;
               getCanvasProperties(data);
             }
@@ -73,9 +87,8 @@ const DrawBoard = (props) => {
           filter: filters,
           size: alignment,
         },
-        (data) => {
-          console.log("data", data);
-          if (data && getCanvasProperties) {
+        (data: ALBUM_DESCRIPTION) => {
+          if (data) {
             getCanvasProperties(data);
           }
         }

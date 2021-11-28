@@ -1,7 +1,13 @@
 import React from "react";
 import "./icon-button.scss";
 
-const IconButton = ({ onClick, children, shadow }) => {
+interface IconButtonProps {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  children: JSX.Element | string;
+  shadow: boolean;
+}
+
+const IconButton = ({ onClick, children, shadow }: IconButtonProps) => {
   return (
     <button
       className={`react-ui-lib-icon-button ${shadow ? "shadow" : "flat"}`}

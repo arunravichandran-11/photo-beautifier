@@ -1,33 +1,39 @@
 import React, { useEffect } from "react";
 import "./ImageAlignment.scss";
 
+import { ALIGNMENT } from "../../../constants/types";
+
 const defaultTransform = {
   scale: 0,
   horizontal: 0,
   vertical: 0,
 };
 
-const Alignment = ({ onAlignmentChange }) => {
+interface AlignmentProps {
+  onAlignmentChange: (e: ALIGNMENT) => void;
+}
+
+const Alignment = ({ onAlignmentChange }: AlignmentProps) => {
   const [transform, setTransform] = React.useState(defaultTransform);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTransform({
       ...transform,
-      scale: e.target.value,
+      scale: +e.target.value,
     });
   };
 
-  const onMoveHorizontal = (e) => {
+  const onMoveHorizontal = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTransform({
       ...transform,
-      horizontal: e.target.value,
+      horizontal: +e.target.value,
     });
   };
 
-  const onMoveVertical = (e) => {
+  const onMoveVertical = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTransform({
       ...transform,
-      vertical: e.target.value,
+      vertical: +e.target.value,
     });
   };
 

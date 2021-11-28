@@ -1,8 +1,14 @@
 import React from "react";
 import "./Slider.scss";
 
-const Slider = ({ label, name, slideValue, onChange }) => {
-  const handleChange = (event) => {
+interface SliderProps {
+  label: string;
+  name: string;
+  slideValue: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+}
+const Slider = ({ label, name, slideValue, onChange }: SliderProps) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(event);
     }

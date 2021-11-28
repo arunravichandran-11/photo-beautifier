@@ -1,7 +1,11 @@
 import React from "react";
 import "./SidePanel.scss";
 
-const SidePanel = ({ children }) => {
+interface SidePanelProps {
+  children: JSX.Element | JSX.Element[] | string;
+}
+
+const SidePanel = ({ children }: SidePanelProps) => {
   return <div className="side-panel">{children}</div>;
 };
 

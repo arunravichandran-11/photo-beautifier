@@ -27,4 +27,25 @@ const defaultDrawingConfig = {
   },
 };
 
-export { acceptedImageTypes, defaultImageFilters, defaultDrawingConfig };
+const defaultAlbumDescription = {
+  id: "",
+  printArea: {
+    width: 0,
+    height: 0,
+  },
+  photo: {
+    name: "",
+    width: 0,
+    height: 0,
+    src: "",
+    x: 0,
+    y: 0,
+  },
+};
+
+export {
+  acceptedImageTypes,
+  defaultImageFilters,
+  defaultDrawingConfig,
+  defaultAlbumDescription,
+};

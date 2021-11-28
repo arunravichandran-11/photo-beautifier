@@ -1,7 +1,7 @@
-const isFileOfGivenFormat = (file, fileFormats) =>
+const isFileOfGivenFormat = (file: File, fileFormats: string[]) =>
   file && fileFormats.includes(file["type"]);
 
-const validateFileUploaded = (file, types) => {
+const validateFileUploaded = (file: File, types: string[]) => {
   let errorMessage;
 
   if (!file) {

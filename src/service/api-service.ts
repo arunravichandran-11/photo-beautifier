@@ -1,4 +1,6 @@
-const savePrintInformation = async (canvasProperties) => {
+import { ALBUM_DESCRIPTION } from "../constants/types";
+
+const savePrintInformation = async (canvasProperties: ALBUM_DESCRIPTION) => {
   try {
     const options = {
       method: "POST",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./PhotoBeautifier.scss";
 import ImportFile from "../Import-Upload/ImportFile";
 
@@ -12,25 +12,40 @@ import IconButton from "../../components/core/IconButton";
 
 import { savePrintInformation } from "../../service/api-service";
 
+import {
+  defaultImageFilters,
+  defaultAlbumDescription,
+} from "../../config/image-config";
+
+import {
+  PHOTO_FILTERS,
+  ALBUM_DESCRIPTION,
+  ALIGNMENT,
+} from "../../constants/types";
+
 const defaultAlignment = {
   scale: 0,
-  left: 0,
-  right: 0,
+  horizontal: 0,
+  vertical: 0,
 };
 
 const PhotoBeautifier = () => {
   let fileNameForDownload;
-  const downloadRef = React.useRef();
-  const [canvasProperties, setCanvasProperties] = React.useState({});
+  const downloadRef = React.useRef<HTMLAnchorElement | null>(null);
+  const [canvasProperties, setCanvasProperties] = useState<ALBUM_DESCRIPTION>(
+    defaultAlbumDescription
+  );
   const [alignment, setAlignment] = React.useState(defaultAlignment);
-  const [filters, setFilters] = React.useState({});
-  const [selectedFile, setSelectedFile] = React.useState(null);
-  const [importedFileDescription, setFileDescription] = React.useState(null);
+  const [filters, setFilters] =
+    React.useState<PHOTO_FILTERS>(defaultImageFilters);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [importedFileDescription, setFileDescription] =
+    useState<ALBUM_DESCRIPTION | null>(null);
 
   const resetAll = () => {
-    setFilters({});
+    setFilters(defaultImageFilters);
     setAlignment(defaultAlignment);
-    setCanvasProperties({});
+    setCanvasProperties(defaultAlbumDescription);
     setSelectedFile(null);
     setFileDescription(null);
   };
@@ -44,17 +59,19 @@ const PhotoBeautifier = () => {
     }
   };
 
-  const setImageSrcToDownload = (dataUrl) => {
-    downloadRef.current.setAttribute("href", dataUrl);
+  const setImageSrcToDownload = (dataUrl: string) => {
+    if (downloadRef && downloadRef.current) {
+      downloadRef.current.setAttribute("href", dataUrl);
+    }
   };
 
-  const handleUploadedFile = (file) => {
+  const handleUploadedFile = (file: File) => {
     if (file) {
       setSelectedFile(file);
     }
   };
 
-  const getAppliedFilters = (filters) => {
+  const getAppliedFilters = (filters: PHOTO_FILTERS) => {
     setFilters(filters);
   };
 
@@ -62,12 +79,16 @@ const PhotoBeautifier = () => {
     fileNameForDownload = `${Date.now()}-${selectedFile.name}.jpg`;
   }
 
-  const handleAlignment = (newTransform) => {
+  const handleAlignment = (newTransform: ALIGNMENT) => {
     setAlignment(newTransform);
   };
 
-  const handleSelectedFile = (fileDescription) => {
-    setFileDescription(fileDescription);
+  const handleSelectedFile = (
+    fileDescription: ALBUM_DESCRIPTION | undefined
+  ) => {
+    if (fileDescription) {
+      setFileDescription(fileDescription);
+    }
   };
 
   const renderAction = (
