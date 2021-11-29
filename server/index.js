@@ -27,14 +27,6 @@ app.post("/print-information", (req, res) => {
   });
 });
 
-app.get("/printInstruction", (req, res) => {
-  const fileData = fs.readFileSync(
-    path.resolve(__dirname, "print/bot.jpg-latest.json")
-  );
-  const printInstruction = JSON.parse(fileData);
-  res.send(printInstruction);
-});
-
 app.get("/imported-prints", (req, res) => {
   const filesInDir = fs
     .readdirSync(path.resolve(__dirname, "print"))
