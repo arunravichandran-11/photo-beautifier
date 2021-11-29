@@ -7,7 +7,7 @@
 1. git clone `https://github.com/arunravichandran-11/photo-beautifier.git`
 2. cd photo-beautifier
 3. npm install
-4. npm run server (or) cd server/ && node index.js
+4. cd server/ && node index.js
 5. npm start
 6. Open [http://localhost:3000](http://localhost:3000)
 
