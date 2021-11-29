@@ -56,7 +56,7 @@ const Alignment = ({ onAlignmentChange }: AlignmentProps) => {
     if (onAlignmentChange) {
       onAlignmentChange(transform);
     }
-  }, [transform]);
+  }, [transform, onAlignmentChange]);
 
   return (
     <div className="component-image-alignment">

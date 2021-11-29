@@ -24,8 +24,9 @@ const ImageFilters = ({ onFilterChange }: ImageFiltersProps) => {
   };
 
   React.useEffect(() => {
+    console.log("use");
     onFilterChange(filters);
-  }, [filters]);
+  }, [filters, onFilterChange]);
 
   const { grayScale, blur, brightness, contrast } = filters;
 

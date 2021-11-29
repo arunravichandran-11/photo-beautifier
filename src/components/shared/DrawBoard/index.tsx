@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import {
   PHOTO_FILTERS,
   ALIGNMENT,
@@ -43,14 +43,14 @@ const DrawBoard = (props: DrawBoardProps) => {
   /**
    * Draw the images to canvas with the help of drawingBoard utils service
    */
-  const processCanvasImage = () => {
+  const processCanvasImage = useCallback(() => {
     if (drawingBoardRef && drawingBoardRef.current) {
       const dataUrl = convertCanvasToDataUrl(drawingBoardRef.current);
       if (getCanvasImageUrl) {
         getCanvasImageUrl(dataUrl);
       }
     }
-  };
+  }, [getCanvasImageUrl]);
 
   /**
    * Draw the images to canvas with the help of drawingBoard utils service on editing.
@@ -77,7 +77,7 @@ const DrawBoard = (props: DrawBoardProps) => {
 
       setTimeout(processCanvasImage, 1000);
     }
-  }, [file, filters, alignment]);
+  }, [file, filters, alignment, getCanvasProperties, processCanvasImage]);
 
   useEffect(() => {
     console.log("phot", photoDescription);
@@ -100,7 +100,7 @@ const DrawBoard = (props: DrawBoardProps) => {
         }
       );
     }
-  }, [photoDescription, filters, alignment]);
+  }, [photoDescription, filters, alignment, getCanvasProperties]);
 
   return <canvas {...printSurfaceProperties} ref={drawingBoardRef}></canvas>;
 };
