@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
+const PORT = process.env.PORT;
 
 const app = express();
 
@@ -47,6 +48,6 @@ app.get("/imported-prints", (req, res) => {
   });
 });
 
-app.listen(5000, () => {
-  console.log("server started");
+app.listen(PORT, () => {
+  console.log(`server started in ${PORT}`);
 });
