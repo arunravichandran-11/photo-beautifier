@@ -1,6 +1,12 @@
-import { defaultImageFilters } from "../config/image-config";
 const BOARD_WIDTH = 960;
 const BOARD_HEIGHT = 480;
+
+const defaultImageFilters = {
+  grayScale: "0",
+  blur: "0",
+  brightness: "100",
+  contrast: "100",
+};
 
 const defaultImageDimension = {
   x: 0,
@@ -9,6 +15,11 @@ const defaultImageDimension = {
   height: null,
 };
 
+/**
+ * Converts the filter object into css filter property.
+ * @param {object} filters - grayScale, blur, brightness, contrast - filters applied.
+ * @returns {string} filterToApply - CSS supported filter string.
+ */
 const getImageFilterCss = (filters) => {
   const { grayScale, blur, brightness, contrast } = filters;
 
@@ -22,6 +33,11 @@ const getImageFilterCss = (filters) => {
   return filterToApply;
 };
 
+/**
+ * Receives the canvas and fit the canvas based on BOARD_WIDTH, BOARD_HEIGHT and return context object.
+ * @param {HTMLCanvasElement} canvas
+ * @returns {CanvasRenderingContext2D}
+ */
 const getClearCanvasContext = (canvas) => {
   const canvasWidth = BOARD_WIDTH;
   const canvasHeight = BOARD_HEIGHT;
@@ -38,6 +54,13 @@ const getClearCanvasContext = (canvas) => {
   return ctx;
 };
 
+/**
+ * Draws the image into the canvas and position it according the configurations given.
+ * @param {HTMLImageElement} img - Image to be drawn in canvas
+ * @param {HTMLCanvasElement} canvas - the actual canvas element
+ * @param {object} - file, size(alignment), imageDimension
+ * @returns {object} - canvas properties after drawn.
+ */
 const drawImage = (
   img,
   canvas,
@@ -120,6 +143,13 @@ const drawImage = (
   return drawnImageProperties;
 };
 
+/**
+ * Function to read the image/* files to get the image src.
+ * @param {File} file - Imported Image File
+ * @param {HTMLCanvasElement | null} canvas
+ * @param {object} options - Filters, alignment
+ * @param {Function} callback
+ */
 const drawImageFileIntoCanvas = (file, canvas, options, callback) => {
   const canvasProperties = {
     id: file.name,
@@ -152,6 +182,13 @@ const drawImageFileIntoCanvas = (file, canvas, options, callback) => {
   reader.readAsDataURL(file);
 };
 
+/**
+ * It receives the image dataUrl and draw it in canvas.
+ * @param {string} dataUrl
+ * @param {HTMLCanvasElement | null} canvas
+ * @param {object} options - Filters, alignment
+ * @param {Function} callback
+ */
 const drawImageIntoCanvas = (dataUrl, canvas, options, callback) => {
   const img = new Image();
   img.src = dataUrl;
@@ -161,6 +198,11 @@ const drawImageIntoCanvas = (dataUrl, canvas, options, callback) => {
   };
 };
 
+/**
+ * convert the given canvas to image[data url].
+ * @param {HTMLCanvasElement | null} canvas
+ * @returns {dataUrl} imageUrl
+ */
 const convertCanvasToDataUrl = (canvas) => {
   const imageUrl = canvas.toDataURL("image/jpeg", 1.0);
   imageUrl.replace("image/jpeg", "image/octet-stream");

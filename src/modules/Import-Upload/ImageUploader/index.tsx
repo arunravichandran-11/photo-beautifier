@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ImageUploader.scss";
-import { RaisedButton } from "../../core/Button";
+import { AlbumConfig } from "../../../config";
+import { RaisedButton } from "../../../components/core/Button";
 
 import { validateFileUploaded } from "../../../utils/fileValidator";
 
@@ -8,20 +9,23 @@ interface ImageUploaderProps {
   getUploadedFile: (e: File) => void;
 }
 
+/**
+ * A Image Uploaded Component
+ * @returns { JSX }
+ */
 const ImageUploader = ({ getUploadedFile }: ImageUploaderProps) => {
   const previewRef = useRef<HTMLImageElement | null>(null);
-  const acceptedImageTypes = [
-    "image/gif",
-    "image/jpeg",
-    "image/png",
-    "image/webp",
-  ];
+  const acceptedImageTypes = AlbumConfig.acceptedImageTypes;
 
-  const fileExtensions = ".png,.jpg,.jpeg,.webp";
+  const fileExtensions = AlbumConfig.acceptedFileExtension;
 
   const [isLoading, setLoading] = React.useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>();
 
+  /**
+   * Set the preview of the file by extracting data url using FileReader result.
+   * @param {File} file Uploaded File
+   */
   const processFile = (file: File) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -39,6 +43,10 @@ const ImageUploader = ({ getUploadedFile }: ImageUploaderProps) => {
     };
   };
 
+  /**
+   * On file upload, validate the file and process it to preview.
+   * @param event
+   */
   const handleChange = (event: React.ChangeEvent<HTMLInputElement> | null) => {
     setLoading(true);
     if (event && event.target && event.target.files) {
@@ -52,6 +60,10 @@ const ImageUploader = ({ getUploadedFile }: ImageUploaderProps) => {
     }
   };
 
+  /**
+   * On file drop, validate the file and process it to preview.
+   * @param {Event} e
+   */
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const dt = e.dataTransfer;
@@ -73,6 +85,9 @@ const ImageUploader = ({ getUploadedFile }: ImageUploaderProps) => {
     }
   }, [uploadedFile]);
 
+  /**
+   * Set the uploaded file to the board
+   */
   const handleProcess = () => {
     if (uploadedFile) {
       getUploadedFile(uploadedFile);

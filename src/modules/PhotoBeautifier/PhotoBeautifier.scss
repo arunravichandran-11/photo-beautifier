@@ -31,7 +31,18 @@
       display: block;
       box-sizing: border-box;
       padding: 8px 2px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      padding-left: 16px;
 
+      h2 {
+        color: #fff;
+        margin-top: 0;
+        span {
+          border-bottom: 2px solid;
+        }
+      }
       canvas {
         box-shadow: 0 10px 20px rgb(0 0 0 / 19%), 0 6px 6px rgb(0 0 0 / 23%);
         padding: 4px;

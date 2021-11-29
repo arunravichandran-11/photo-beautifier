@@ -1,7 +1,7 @@
 import React from "react";
 import "./ImageFilters.scss";
 import Slider from "../../core/Slider";
-import { defaultImageFilters } from "../../../config/image-config";
+import { AlbumConfig } from "../../../config";
 import { PHOTO_FILTERS } from "../../../constants/types";
 
 interface ImageFiltersProps {
@@ -9,8 +9,12 @@ interface ImageFiltersProps {
 }
 
 const ImageFilters = ({ onFilterChange }: ImageFiltersProps) => {
-  const [filters, setFilters] = React.useState(defaultImageFilters);
+  const [filters, setFilters] = React.useState(AlbumConfig.defaultImageFilters);
 
+  /**
+   * Apply the filter changes to the state of the component.
+   * @param {Event} e
+   */
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setFilters({

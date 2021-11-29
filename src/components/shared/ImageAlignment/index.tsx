@@ -16,6 +16,10 @@ interface AlignmentProps {
 const Alignment = ({ onAlignmentChange }: AlignmentProps) => {
   const [transform, setTransform] = React.useState(defaultTransform);
 
+  /**
+   * Set scale value in transform state
+   * @param {Event} e - changeEvent
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTransform({
       ...transform,
@@ -23,6 +27,10 @@ const Alignment = ({ onAlignmentChange }: AlignmentProps) => {
     });
   };
 
+  /**
+   * Set Position (X-Axis) value in transform state
+   * @param {Event} e - changeEvent
+   */
   const onMoveHorizontal = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTransform({
       ...transform,
@@ -30,6 +38,10 @@ const Alignment = ({ onAlignmentChange }: AlignmentProps) => {
     });
   };
 
+  /**
+   * Set Position (Y-Axis) value in transform state
+   * @param {Event} e - changeEvent
+   */
   const onMoveVertical = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTransform({
       ...transform,
@@ -37,6 +49,9 @@ const Alignment = ({ onAlignmentChange }: AlignmentProps) => {
     });
   };
 
+  /**
+   * Updates the alignment changes to the receiving component.
+   */
   useEffect(() => {
     if (onAlignmentChange) {
       onAlignmentChange(transform);

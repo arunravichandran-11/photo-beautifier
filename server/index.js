@@ -37,7 +37,7 @@ app.get("/printInstruction", (req, res) => {
 
 app.get("/imported-prints", (req, res) => {
   const filesInDir = fs
-    .readdirSync("./print")
+    .readdirSync(path.resolve(__dirname, "print"))
     .filter((file) => path.extname(file) === ".json");
 
   const allFiles = [];
@@ -54,6 +54,7 @@ app.get("/imported-prints", (req, res) => {
     data: allFiles,
   });
 });
+
 app.listen(5000, () => {
   console.log("server started");
 });

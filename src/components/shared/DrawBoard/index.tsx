@@ -40,6 +40,9 @@ const DrawBoard = (props: DrawBoardProps) => {
     height: BOARD_HEIGHT,
   };
 
+  /**
+   * Draw the images to canvas with the help of drawingBoard utils service
+   */
   const processCanvasImage = () => {
     if (drawingBoardRef && drawingBoardRef.current) {
       const dataUrl = convertCanvasToDataUrl(drawingBoardRef.current);
@@ -49,6 +52,9 @@ const DrawBoard = (props: DrawBoardProps) => {
     }
   };
 
+  /**
+   * Draw the images to canvas with the help of drawingBoard utils service on editing.
+   */
   useEffect(() => {
     if (file) {
       drawImageFileIntoCanvas(

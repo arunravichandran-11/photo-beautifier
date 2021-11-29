@@ -7,3 +7,5 @@ export const SUPPORTED_IMAGE_FORMATS = [
   "image/png",
   "image/webp",
 ];
+
+export const SUPPORTED_IMAGE_FILE_EXTENSION = ".png,.jpg,.jpeg,.webp";

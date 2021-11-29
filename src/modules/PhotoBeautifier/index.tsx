@@ -1,55 +1,53 @@
 import React, { useState } from "react";
 import "./PhotoBeautifier.scss";
 import ImportFile from "../Import-Upload/ImportFile";
+import ImageUploader from "../Import-Upload/ImageUploader";
 
-import ImageUploader from "../../components/shared/ImageUploader";
 import ImageFilters from "../../components/shared/ImageFilters";
 import Alignment from "../../components/shared/ImageAlignment";
-
 import DrawBoard from "../../components/shared/DrawBoard";
+
 import SidePanel from "../../components/core/SidePanel";
 import IconButton from "../../components/core/IconButton";
 
 import { savePrintInformation } from "../../service/api-service";
-
-import {
-  defaultImageFilters,
-  defaultAlbumDescription,
-} from "../../config/image-config";
-
+import { AlbumConfig } from "../../config";
 import {
   PHOTO_FILTERS,
   ALBUM_DESCRIPTION,
   ALIGNMENT,
 } from "../../constants/types";
 
-const defaultAlignment = {
-  scale: 0,
-  horizontal: 0,
-  vertical: 0,
-};
-
 const PhotoBeautifier = () => {
   let fileNameForDownload;
   const downloadRef = React.useRef<HTMLAnchorElement | null>(null);
   const [canvasProperties, setCanvasProperties] = useState<ALBUM_DESCRIPTION>(
-    defaultAlbumDescription
+    AlbumConfig.defaultAlbumDescription
   );
-  const [alignment, setAlignment] = React.useState(defaultAlignment);
-  const [filters, setFilters] =
-    React.useState<PHOTO_FILTERS>(defaultImageFilters);
+  const [alignment, setAlignment] = React.useState(
+    AlbumConfig.defaultAlignment
+  );
+  const [filters, setFilters] = React.useState<PHOTO_FILTERS>(
+    AlbumConfig.defaultImageFilters
+  );
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [importedFileDescription, setFileDescription] =
     useState<ALBUM_DESCRIPTION | null>(null);
 
+  /**
+   * reset all state and move to upload page after successful save/submit
+   */
   const resetAll = () => {
-    setFilters(defaultImageFilters);
-    setAlignment(defaultAlignment);
-    setCanvasProperties(defaultAlbumDescription);
+    setFilters(AlbumConfig.defaultImageFilters);
+    setAlignment(AlbumConfig.defaultAlignment);
+    setCanvasProperties(AlbumConfig.defaultAlbumDescription);
     setSelectedFile(null);
     setFileDescription(null);
   };
 
+  /**
+   * saveDrawBoardAsJSON - call savePrintInformation service to save JSON file in server.
+   */
   const saveDrawBoardAsJSON = async () => {
     if (canvasProperties) {
       const result = await savePrintInformation(canvasProperties);
@@ -59,18 +57,30 @@ const PhotoBeautifier = () => {
     }
   };
 
+  /**
+   * this set the download button href attribute with the latest edited image in canvas to download it locally.
+   * @param {string} dataUrl - drawn image incanvas
+   */
   const setImageSrcToDownload = (dataUrl: string) => {
     if (downloadRef && downloadRef.current) {
       downloadRef.current.setAttribute("href", dataUrl);
     }
   };
 
+  /**
+   * Image File Uploaded with image/* format and set it in component state for reference.
+   * @param {File} file - Uploaded file
+   */
   const handleUploadedFile = (file: File) => {
     if (file) {
       setSelectedFile(file);
     }
   };
 
+  /**
+   * Get the selected filter and set it in state.
+   * @param {object} filters - { grayScale, blur, brightness, contrast }
+   */
   const getAppliedFilters = (filters: PHOTO_FILTERS) => {
     setFilters(filters);
   };
@@ -83,6 +93,10 @@ const PhotoBeautifier = () => {
     setAlignment(newTransform);
   };
 
+  /**
+   * It has the json response of a file chosen from the list of files in import section.
+   * @param {ALBUM_DESCRIPTION} fileDescription - IMported file information
+   */
   const handleSelectedFile = (
     fileDescription: ALBUM_DESCRIPTION | undefined
   ) => {
@@ -104,6 +118,10 @@ const PhotoBeautifier = () => {
     </div>
   );
 
+  /**
+   * Render the canvas board to show the image uploaded and edit.
+   * @returns {JSX | null}
+   */
   const renderBoard = () => {
     if (selectedFile || importedFileDescription) {
       return (
@@ -114,6 +132,9 @@ const PhotoBeautifier = () => {
             <Alignment onAlignmentChange={handleAlignment} />
           </SidePanel>
           <div className="draw-board">
+            <h2>
+              <span>Drawing Board</span>
+            </h2>
             <DrawBoard
               file={selectedFile}
               photoDescription={importedFileDescription}
