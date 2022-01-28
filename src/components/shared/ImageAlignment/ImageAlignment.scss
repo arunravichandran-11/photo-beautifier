@@ -1,0 +1,27 @@
+.component-image-alignment {
+  .title {
+    text-align: left;
+    font-size: 16px;
+    text-transform: Uppercase;
+    text-decoration: underline;
+  }
+  .input-wrapper {
+    display: flex;
+    margin: 12px 0px;
+    label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+
+      input {
+        cursor: pointer;
+      }
+
+      span {
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+  }
+}

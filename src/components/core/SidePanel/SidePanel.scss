@@ -1,0 +1,11 @@
+.side-panel {
+  position: absolute;
+  right: 0;
+  width: 220px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  color: #ddd;
+  padding: 16px;
+  z-index: 9999;
+  box-sizing: border-box;
+}
